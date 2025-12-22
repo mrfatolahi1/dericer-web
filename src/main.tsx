@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./styles/app/App";
-import { ThemeProvider } from "./styles/app/providers/ThemeProvider";
-import { QueryProvider } from "./styles/app/providers/QueryProvider";
+import App from "./app/App.tsx";
+import { ThemeProvider } from "./app/providers/ThemeProvider";
+import { QueryProvider } from "./app/providers/QueryProvider";
 
 // Import global Tailwind styles
 import "./styles/globals.css";
