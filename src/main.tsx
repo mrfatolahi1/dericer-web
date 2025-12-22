@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./app/App";
+import App from "./styles/app/App";
 import { ThemeProvider } from "./styles/app/providers/ThemeProvider";
 import { QueryProvider } from "./styles/app/providers/QueryProvider";
 
