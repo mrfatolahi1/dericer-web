@@ -1,73 +1,126 @@
-# React + TypeScript + Vite
+![Dericer Logo](./logo.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Dericer Web
 
-Currently, two official plugins are available:
+Dericer Web is the browser-based user interface for the **[dericer-core](https://github.com/mrfatolahi1/dericer-core)** personal finance core.  
+It is a **local-first**, single-user, multi-currency expense tracking app that stores all data in the browser using **IndexedDB** and allows full backup/export to JSON in future versions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+- **React** + **TypeScript**
+- **Vite** (bundler/dev server)
+- **Tailwind CSS** (styling)
+- **Custom layout components** (no heavy UI framework yet)
+- **@tanstack/react-query** (data fetching/cache layer)
+- **React Router** (routing)
+- **IndexedDB** via a custom `StoragePort` adapter
+- **dericer-core** (domain logic & accounting rules)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features (Current & Planned)
 
-## Expanding the ESLint configuration
+### Core behavior (via `dericer-core`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Multiple accounts with fixed currencies
+- Multi-currency support (separate balances per currency)
+- Transaction types: income, expense, debt, receivable, transfer
+- Categories (hierarchical), tags, counterparty (simple name)
+- Budgets per category and time range
+- Simple goals
+- Powerful querying/filtering on transactions (by date, type, category, tag, counterparty, amount, notes)
+- Soft-delete semantics for transactions (mark-as-deleted)
+- CSV/JSON export at the core layer
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Web UI (this project)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Dashboard with high-level summary (accounts, currencies, monthly overview)
+- Transactions page:
+    - List of transactions
+    - Basic filters and sorting
+    - Form to create transactions
+- Settings page:
+    - (Planned) Backup & restore (export all data to JSON/ZIP, import back)
+- Light / dark theme toggle
+- Local-first behavior (no server, all data stays in your browser)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+> **Important:** This is a personal/offline app. There is **no remote backend**.  
+> Data lives in your browser (IndexedDB). Clearing site data will remove it unless you export a backup.
+
+## Project Structure
+
+Rough structure of the `src/` folder:
+
+```text
+src/
+  app/
+    App.tsx             # Main application component
+    routes.tsx          # Route definitions
+    providers/
+      ThemeProvider.tsx # Light/dark theme handling
+      QueryProvider.tsx # React Query setup
+      CoreProvider.tsx  # Wiring dericer-core into React
+  core/
+    browser-core.ts     # Creates CoreApi with IndexedDB storage + TimePort
+  storage/
+    browser/
+      indexeddb-storage.ts  # StoragePort implementation on top of IndexedDB
+  components/
+    layout/
+      AppLayout.tsx     # Shell layout (sidebar + header + content)
+      Sidebar.tsx       # Navigation
+  pages/
+    DashboardPage.tsx
+    TransactionsPage.tsx
+    SettingsPage.tsx
+  styles/
+    globals.css         # Tailwind base & global styles
+  main.tsx              # React/Vite entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (LTS) + npm (or pnpm/yarn)
+- An existing `dericer-core` package (installed from npm)
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Make sure dericer-core is installed
+npm install dericer-core
 ```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Then open the URL shown in the terminal (usually `http://localhost:5173`).
+
+### Production Build
+
+```bash
+npm run build
+npm run preview   # Optional: preview the production build
+```
+
+## Data Storage & Privacy
+
+- All data is stored in **IndexedDB** under the current browser profile.
+- There is **no** remote server and **no** automatic sync.
+- You are responsible for your own backups (via export/import when implemented).
+- If you clear browser storage or switch devices without exporting, you will lose local data.
+
+## Relationship to `dericer-core`
+
+- All domain logic and accounting rules live in `dericer-core`.
+- This project is a thin UI layer around that core.
+- Future desktop/mobile apps can reuse the same core package and data formats.
+
+## License
+
+Same license as the `dericer-core` project.
