@@ -46,9 +46,7 @@ function applyThemeToDocument(theme: Theme) {
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [theme, setThemeState] = useState<Theme>("light");
 
-    // Initialize theme on first mount
     useEffect(() => {
-        // Check if user has an explicit preference stored
         const stored = (localStorage.getItem(THEME_STORAGE_KEY) as Theme | null) ?? null;
 
         if (stored === "light" || stored === "dark") {
@@ -68,7 +66,6 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         applyThemeToDocument(initial);
     }, []);
 
-    // Keep document + localStorage in sync when theme changes
     useEffect(() => {
         applyThemeToDocument(theme);
         localStorage.setItem(THEME_STORAGE_KEY, theme);

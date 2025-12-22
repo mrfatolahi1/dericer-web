@@ -12,8 +12,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            // We generally don't want automatic refetch when focusing the window,
-            // but you can turn this back on if you prefer.
             refetchOnWindowFocus: false,
         },
     },
