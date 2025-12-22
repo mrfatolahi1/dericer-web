@@ -1,26 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./app/App.tsx";
+import App from "./app/App";
 import { ThemeProvider } from "./app/providers/ThemeProvider";
 import { QueryProvider } from "./app/providers/QueryProvider";
+import { CoreProvider } from "./app/providers/CoreProvider";
 
-// Import global Tailwind styles
 import "./styles/globals.css";
 
-/**
- * Entry point of the React application.
- * We wrap the app with:
- * - BrowserRouter: for client-side routing
- * - ThemeProvider: for light/dark theme handling
- * - QueryProvider: for React Query (async data) setup
- */
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <BrowserRouter>
             <ThemeProvider>
                 <QueryProvider>
-                    <App />
+                    <CoreProvider>
+                        <App />
+                    </CoreProvider>
                 </QueryProvider>
             </ThemeProvider>
         </BrowserRouter>
