@@ -50,6 +50,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const stored = (localStorage.getItem(THEME_STORAGE_KEY) as Theme | null) ?? null;
 
         if (stored === "light" || stored === "dark") {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setThemeState(stored);
             applyThemeToDocument(stored);
             return;
@@ -92,6 +93,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
  * Convenience hook to access the current theme and actions.
  * Must be used inside <ThemeProvider>.
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme(): ThemeContextValue {
     const ctx = useContext(ThemeContext);
     if (!ctx) {
