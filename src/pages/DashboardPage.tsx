@@ -5,9 +5,10 @@ import { useCore } from "../app/providers/CoreProvider";
  * DashboardPage will eventually show:
  * - account balances
  * - per-currency totals
- * - a few key charts (e.g. income vs expenses)
+ * - a few key charts
  *
- * For now we show some basic information from the core to verify everything is wired.
+ * For now, we only show the number of accounts to prove that
+ * the core + IndexedDB wiring works.
  */
 export const DashboardPage: React.FC = () => {
     const { core, isReady, error } = useCore();
@@ -43,8 +44,7 @@ export const DashboardPage: React.FC = () => {
         <section className="space-y-4">
             <h2 className="text-xl font-semibold tracking-tight">Dashboard</h2>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-                Welcome to Dericer. This dashboard will show a quick summary of your
-                accounts, balances, and recent activity.
+                Quick overview of your Dericer data.
             </p>
 
             {error && (
